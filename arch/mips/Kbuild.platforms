@@ -35,6 +35,7 @@ platforms += sibyte
 platforms += sni
 platforms += txx9
 platforms += vr41xx
+platforms += trivialmips
 
 # include the platform specific files
 include $(patsubst %, $(srctree)/arch/mips/%/Platform, $(platforms))

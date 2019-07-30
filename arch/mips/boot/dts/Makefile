@@ -12,5 +12,6 @@ subdir-y	+= pic32
 subdir-y	+= qca
 subdir-y	+= ralink
 subdir-y	+= xilfpga
+subdir-y	+= trivialmips
 
 obj-$(CONFIG_BUILTIN_DTB)	:= $(addsuffix /, $(subdir-y))

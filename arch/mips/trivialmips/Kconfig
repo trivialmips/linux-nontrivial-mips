@@ -1,0 +1,12 @@
+if MACH_TRIVIALMIPS
+
+choice
+    prompt "Machine type"
+    default TRIVIALMIPS_NSCSCC
+
+config TRIVIALMIPS_NSCSCC
+    bool "TrivialMIPS SoC for NSCSCC 2019 board"
+
+endchoice
+
+endif

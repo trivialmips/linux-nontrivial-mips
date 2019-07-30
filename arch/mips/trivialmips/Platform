@@ -1,0 +1,3 @@
+platform-$(CONFIG_MACH_TRIVIALMIPS)	+= trivialmips/
+cflags-$(CONFIG_MACH_TRIVIALMIPS)	+= -I$(srctree)/arch/mips/include/asm/mach-trivialmips -mno-branch-likely
+load-$(CONFIG_MACH_TRIVIALMIPS)	+= 0xffffffff80100000

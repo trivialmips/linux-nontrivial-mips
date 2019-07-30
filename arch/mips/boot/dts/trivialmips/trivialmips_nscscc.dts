@@ -1,0 +1,170 @@
+/dts-v1/;
+
+#include <dt-bindings/interrupt-controller/irq.h>
+
+/ {
+	compatible = "TrivialMIPS,NSCSCC";
+	#address-cells = <1>;
+	#size-cells = <1>;
+
+	chosen {
+		bootargs = "console=ttyS0,115200n8 rootfstype=squashfs root=/dev/mtdblock1";
+	};
+
+	aliases {
+        	serial0 = &serial0;
+    	};
+
+	cpus {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		mips-hpt-frequency = <80000000>;
+		cpu@0 {
+			device_type = "cpu";
+			compatible = "mips,4Kc";
+			clocks = <&ext>;
+			reg = <0>;
+		};
+	};
+
+	ext: ext {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+	};
+
+	memory {
+		device_type = "memory";
+		reg = <0x0 0x8000000>;
+	};
+
+	cpuintc: interrupt-controller@0 {
+		#address-cells = <0>;
+		#interrupt-cells = <1>;
+		interrupt-controller;
+		compatible = "mti,cpu-interrupt-controller";
+	};
+
+	soc {
+		compatible = "simple-bus";
+		#address-cells = <1>;
+		#size-cells = <1>;
+		#interrupt-cells = <1>;
+		ranges;
+
+		serial0: serial@1fd02000 {
+			device_type = "serial";
+			compatible = "ns16550";
+			reg = <0x1fd02000 0x1000>;
+			reg-offset = <0x1000>;
+			reg-io-width = <4>;
+			reg-shift = <2>;
+			current-speed = <115200>;
+			clock-frequency = <100000000>;
+			interrupt-parent = <&cpuintc>;
+			interrupts = <2>;
+		};
+
+		lcd0: lcd@1c030000 {
+			compatible = "lcd,nt35510";
+			reg = <0x1c030000 0x1000>;
+		};
+
+		axi_quad_spi: spi@1c040000 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			compatible = "xlnx,xps-spi-2.00.a";
+			interrupt-parent = <&axi_intc_0>;
+			interrupts = <1>;
+			reg = <0x1c040000 0x10000>;
+			xlnx,num-ss-bits = <0x1>;
+			num-cs = <0x1>;
+			fifo-size = <256>;
+
+			flash@0 {
+				compatible = "mx25l25635f", "jedec,spi-nor";
+				reg = <0x0>;
+				spi-max-frequency = <30000000>;
+
+				spi-rx-bus-width = <4>;
+				m25p,fast-read;
+
+				partitions {
+					compatible = "fixed-partitions";
+					#address-cells = <1>;
+					#size-cells = <1>;
+
+					partition@10000 {
+						label = "bootenv";
+						reg = <0x10000 0x10000>;
+					};
+					partition@20000 {
+						label = "rootfs";
+						reg = <0x20000 0x1fe0000>;
+					};
+				};
+			};
+		};
+
+		axi_intc_0: interrupt-controller@1d000000 {
+			#interrupt-cells = <1>;
+			compatible = "xlnx,xps-intc-1.00.a";
+			interrupt-controller;
+			interrupt-parent = <&cpuintc>;
+			interrupts = <6>;
+			reg = <0x1d000000 0x1000>;
+			xlnx,kind-of-intr = <0x7>;
+			xlnx,num-intr-inputs = <0x3>;
+		};
+
+		axi_ethernetlite: ethernet@1c000000 {
+			compatible = "xlnx,xps-ethernetlite-3.00.a";
+			device_type = "network";
+			mac-address = [19 98 00 01 00 29];
+			phy-handle = <&phy0>;
+			reg = <0x1c000000 0x10000>;
+			xlnx,duplex = <0x1>;
+			xlnx,include-global-buffers = <0x1>;
+			xlnx,include-internal-loopback = <0x0>;
+			xlnx,include-mdio = <0x1>;
+			xlnx,instance = "axi_ethernetlite_inst";
+			xlnx,rx-ping-pong = <0x1>;
+			xlnx,s-axi-id-width = <0x1>;
+			xlnx,tx-ping-pong = <0x1>;
+			xlnx,use-internal = <0x0>;
+			interrupt-parent = <&axi_intc_0>;
+			interrupts = <0>;
+			mdio {
+				#address-cells = <1>;
+				#size-cells = <0>;
+				phy0: phy@1 {
+					device_type = "ethernet-phy";
+					reg = <1>;
+				} ;
+			} ;
+		} ;
+
+		ps2: ps2@1c020000 {
+			compatible = "altr,ps2-1.0";
+			reg = <0x1c020000 0x1000>;
+			interrupt-parent = <&cpuintc>;
+			interrupts = <3>;
+		};
+
+		axi_tft_0: axi_tft@1c061000 {
+			compatible = "xlnx,xps-tft-1.00.a";
+			reg = <0x1c090000 0x1000>,
+				<0x1c091000 0x1000>,
+				<0x1c092000 0x1000>;
+				//<0x1fd0f028 0x4>;
+			xlnx,dcr-splb-slave-if = <0x1>;
+			resolution = <640 480>;
+			virtual-resolution = <1024 480>;
+			phys-size = <1024 512>;
+		};
+
+	};
+};
+
+&ext {
+	clock-frequency = <80000000>;
+}; 
