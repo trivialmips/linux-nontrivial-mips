@@ -112,8 +112,8 @@
 			interrupt-parent = <&cpuintc>;
 			interrupts = <6>;
 			reg = <0x1d000000 0x1000>;
-			xlnx,kind-of-intr = <0x7>;
-			xlnx,num-intr-inputs = <0x3>;
+			xlnx,kind-of-intr = <0x15>;
+			xlnx,num-intr-inputs = <0x4>;
 		};
 
 		axi_ethernetlite: ethernet@1c000000 {
@@ -148,6 +148,13 @@
 			reg = <0x1c020000 0x1000>;
 			interrupt-parent = <&cpuintc>;
 			interrupts = <3>;
+		};
+
+		usb: usb@1c050000 {
+		    compatible = "ue11-hcd";
+		    reg = <0x1c050000 0x1000>;
+		    interrupt-parent = <&axi_intc_0>;
+		    interrupts = <3>;
 		};
 
 		axi_tft_0: axi_tft@1c010000 {

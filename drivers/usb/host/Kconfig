@@ -4,6 +4,11 @@
 #
 comment "USB Host Controller Drivers"
 
+config USB_UE11_HCD
+	bool "UltraEmbedded USB 1.1 Core HCD Support"
+	help
+	  Enable this option to support UltraEmbedded USB 1.1 Core
+
 config USB_C67X00_HCD
 	tristate "Cypress C67x00 HCD support"
 	depends on HAS_IOMEM
