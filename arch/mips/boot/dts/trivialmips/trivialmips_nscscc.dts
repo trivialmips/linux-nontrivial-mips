@@ -8,7 +8,7 @@
 	#size-cells = <1>;
 
 	chosen {
-		bootargs = "console=ttyS0,115200n8 rootfstype=squashfs root=/dev/mtdblock1";
+		bootargs = "console=ttyS0,115200n8 console=tty1 rootfstype=squashfs root=/dev/mtdblock1";
 	};
 
 	aliases {
@@ -150,16 +150,16 @@
 			interrupts = <3>;
 		};
 
-		axi_tft_0: axi_tft@1c061000 {
+		axi_tft_0: axi_tft@1c010000 {
 			compatible = "xlnx,xps-tft-1.00.a";
-			reg = <0x1c090000 0x1000>,
-				<0x1c091000 0x1000>,
-				<0x1c092000 0x1000>;
+			reg = <0x1c010000 0x1000>;
+				//<0x1c091000 0x1000>,
+				//<0x1c092000 0x1000>;
 				//<0x1fd0f028 0x4>;
 			xlnx,dcr-splb-slave-if = <0x1>;
-			resolution = <640 480>;
-			virtual-resolution = <1024 480>;
-			phys-size = <1024 512>;
+			// resolution = <640 480>;
+			// virtual-resolution = <1024 480>;
+			// phys-size = <1024 512>;
 		};
 
 	};
