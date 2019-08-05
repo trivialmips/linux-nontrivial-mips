@@ -1,4 +1,3 @@
-// SPDX-License-Identifier: GPL-2.0-only
 /*
  * Altera University Program PS2 controller driver
  *
@@ -6,6 +5,10 @@
  *
  * Based on sa1111ps2.c, which is:
  * Copyright (C) 2002 Russell King
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
  */
 
 #include <linux/module.h>
@@ -95,13 +98,6 @@ static int altera_ps2_probe(struct platform_device *pdev)
 	if (irq < 0)
 		return -ENXIO;
 
-	error = devm_request_irq(&pdev->dev, irq, altera_ps2_rxint, 0,
-				 pdev->name, ps2if);
-	if (error) {
-		dev_err(&pdev->dev, "could not request IRQ %d\n", irq);
-		return error;
-	}
-
 	serio = kzalloc(sizeof(struct serio), GFP_KERNEL);
 	if (!serio)
 		return -ENOMEM;
@@ -115,6 +111,14 @@ static int altera_ps2_probe(struct platform_device *pdev)
 	serio->port_data	= ps2if;
 	serio->dev.parent	= &pdev->dev;
 	ps2if->io		= serio;
+	pr_info("ps2if->io=%p\n", ps2if->io);
+
+	error = devm_request_irq(&pdev->dev, irq, altera_ps2_rxint, 0,
+				 pdev->name, ps2if);
+	if (error) {
+		dev_err(&pdev->dev, "could not request IRQ %d\n", irq);
+		return error;
+	}
 
 	dev_info(&pdev->dev, "base %p, irq %d\n", ps2if->base, irq);
 
@@ -162,3 +166,4 @@ MODULE_DESCRIPTION("Altera University Program PS2 controller driver");
 MODULE_AUTHOR("Thomas Chou <thomas@wytron.com.tw>");
 MODULE_LICENSE("GPL");
 MODULE_ALIAS("platform:" DRV_NAME);
+
