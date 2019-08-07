@@ -8,7 +8,7 @@
 	#size-cells = <1>;
 
 	chosen {
-		bootargs = "console=ttyS0,115200n8 console=tty1 rootfstype=squashfs root=/dev/mtdblock1";
+		bootargs = "console=ttyS0,115200n8 rootfstype=squashfs rdinit=/bin/sh root=/dev/mtdblock1";
 	};
 
 	aliases {
@@ -18,7 +18,7 @@
 	cpus {
 		#address-cells = <1>;
 		#size-cells = <0>;
-		mips-hpt-frequency = <80000000>;
+		mips-hpt-frequency = <40000000>; // CP0 count with half frequency
 		cpu@0 {
 			device_type = "cpu";
 			compatible = "mips,4Kc";
@@ -158,11 +158,11 @@
 		};
 
 		axi_tft_0: axi_tft@1c010000 {
-			compatible = "xlnx,xps-tft-1.00.a";
-			reg = <0x1c010000 0x1000>;
-				//<0x1c091000 0x1000>,
-				//<0x1c092000 0x1000>;
-				//<0x1fd0f028 0x4>;
+			compatible = "xlnx,xps-tft-1.00.accl";
+			reg = <0x1c010000 0x1000>, // TFT controller
+				<0x1c060000 0x1000>, // framebuffer read
+				<0x1c070000 0x1000>, // framebuffer write
+				<0x1ff08000 0x4>; // video stream modifier control
 			xlnx,dcr-splb-slave-if = <0x1>;
 			// resolution = <640 480>;
 			// virtual-resolution = <1024 480>;
