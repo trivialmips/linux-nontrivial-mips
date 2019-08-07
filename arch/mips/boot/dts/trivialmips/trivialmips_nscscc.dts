@@ -53,7 +53,7 @@
 
 		serial0: serial@1fd02000 {
 			device_type = "serial";
-			compatible = "ns16550";
+			compatible = "ns16550a";
 			reg = <0x1fd02000 0x1000>;
 			reg-offset = <0x1000>;
 			reg-io-width = <4>;
