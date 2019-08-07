@@ -522,7 +522,9 @@ static int xilinxfb_assign(struct platform_device *pdev,
 
 	if (drvdata->flags & BUS_ACCESS_FLAG) {
 		struct resource *res;
-
+		int dma_succ;
+		int i;
+		
 		res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 		drvdata->regs = devm_ioremap_resource(&pdev->dev, res);
 		if (IS_ERR(drvdata->regs))
@@ -530,8 +532,7 @@ static int xilinxfb_assign(struct platform_device *pdev,
 
 		drvdata->regs_phys = res->start;
 
-		int dma_succ = 0;
-		int i;
+		dma_succ = 0;
 		for(i = 0; i < XILINX_FBMBUF_REG_NUM; i++){
 			res = platform_get_resource(pdev, IORESOURCE_MEM, 1 + i);
 			if(res){
@@ -604,8 +605,7 @@ static int xilinxfb_assign(struct platform_device *pdev,
 	drvdata->info.fix.line_length = pdata->xvirt * BYTES_PER_PIXEL;
 
 	drvdata->info.pseudo_palette = drvdata->pseudo_palette;
-	drvdata->info.flags = FBINFO_DEFAULT | FBINFO_HWACCEL_COPYAREA |
-	                      FBINFO_MODULE | FBINFO_HWACCEL_FILLRECT;
+	drvdata->info.flags = FBINFO_DEFAULT | FBINFO_HWACCEL_COPYAREA | FBINFO_HWACCEL_FILLRECT;
 	drvdata->info.var = xilinx_fb_var;
 	drvdata->info.var.height = pdata->screen_height_mm;
 	drvdata->info.var.width = pdata->screen_width_mm;
