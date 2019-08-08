@@ -39,7 +39,7 @@ void __init plat_time_init(void) {
         return;
     }
 
-    mips_hpt_frequency = clk_get_rate(clk) / 2;
+    mips_hpt_frequency = clk_get_rate(clk);
     clk_put(clk);
 }
 
