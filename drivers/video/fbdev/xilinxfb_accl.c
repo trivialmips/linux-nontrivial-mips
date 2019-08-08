@@ -301,7 +301,7 @@ static void raw_dma_copy(struct xilinxfb_drvdata *drvdata,
 		xilinx_dma_out32(drvdata, XILINX_FRMBUF_ADDR_OFFSET, src, XILINX_FBMBUF_RD);
 		xilinx_dma_out32(drvdata, XILINX_FRMBUF_ADDR_OFFSET, dst, XILINX_FBMBUF_WR);
 
-		//udelay(50000);
+		// udelay(50000);
 		xilinx_dma_set(drvdata, XILINX_FRMBUF_CTRL_OFFSET, XILINX_FRMBUF_CTRL_AP_START, XILINX_FBMBUF_RD);
 		xilinx_dma_set(drvdata, XILINX_FRMBUF_CTRL_OFFSET, XILINX_FRMBUF_CTRL_AP_START, XILINX_FBMBUF_WR);
 		/* Wait for transfer finish */

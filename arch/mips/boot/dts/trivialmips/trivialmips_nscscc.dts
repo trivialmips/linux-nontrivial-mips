@@ -8,7 +8,7 @@
 	#size-cells = <1>;
 
 	chosen {
-		bootargs = "console=ttyS0,115200n8 rootfstype=squashfs rdinit=/bin/sh root=/dev/mtdblock1";
+		bootargs = "console=ttyS0,115200n8 console=tty1 rootfstype=squashfs rdinit=/bin/sh root=/dev/mtdblock1";
 	};
 
 	aliases {
