@@ -8,7 +8,7 @@
 	#size-cells = <1>;
 
 	chosen {
-		bootargs = "console=ttyS0,115200n8 console=tty1 rootfstype=squashfs rdinit=/bin/sh root=/dev/mtdblock1";
+		bootargs = "console=ttyS0,115200n8 console=tty1 rootfstype=squashfs root=/dev/mtdblock1";
 	};
 
 	aliases {
@@ -18,7 +18,6 @@
 	cpus {
 		#address-cells = <1>;
 		#size-cells = <0>;
-		mips-hpt-frequency = <40000000>; // CP0 count with half frequency
 		cpu@0 {
 			device_type = "cpu";
 			compatible = "mips,4Kc";
@@ -29,6 +28,7 @@
 
 	ext: ext {
 		compatible = "fixed-clock";
+		clock-frequency = <80000000>;
 		#clock-cells = <0>;
 	};
 
@@ -164,14 +164,11 @@
 				<0x1c070000 0x1000>, // framebuffer write
 				<0x1ff08000 0x4>; // video stream modifier control
 			xlnx,dcr-splb-slave-if = <0x1>;
-			// resolution = <640 480>;
-			// virtual-resolution = <1024 480>;
-			// phys-size = <1024 512>;
+			resolution = <640 480>; // actual video size
+			virtual-resolution = <1024 480>; // framebuffersize
+			phys-size = <640 480>; // don't care (physical size of screen)
 		};
 
 	};
 };
 
-&ext {
-	clock-frequency = <80000000>;
-}; 
