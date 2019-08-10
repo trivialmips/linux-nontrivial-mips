@@ -617,7 +617,7 @@ static void out_packet(struct ue11 *ue11, struct ue11h_ep *ep, struct urb *urb)
 		USB_PID_DATA1 :
 		USB_PID_DATA0;
 
-	pr_info("USB: OUT EP %x, LEN %d, PID=%x\n", endpoint, len, request);
+	pr_debug("USB: OUT EP %x, LEN %d, PID=%x\n", endpoint, len, request);
 
 	// Load DATAx transfer into address 0+
 	pr_debug(" Tx: %02x", request);
@@ -653,7 +653,7 @@ static inline void enable_sof_interrupt(struct ue11 *ue11)
 {
 	if (ue11->irq_enable & (1 << USB_IRQ_MASK_SOF_SHIFT))
 		return;
-	pr_info("USB: Enable SOF");
+	dev_info(ue11_to_hcd(ue11)->self.controller, "USB: Enable SOF");
 	ue11->irq_enable |= (1 << USB_IRQ_MASK_SOF_SHIFT);
 }
 //-----------------------------------------------------------------
@@ -880,7 +880,7 @@ static void process_transfer_result(struct ue11 *ue11, struct ue11h_ep *ep)
 					else if (ep->length < ep->maxpacket ||
 							!(urb->transfer_flags &
 								URB_ZERO_PACKET)) {
-						pr_info("USB: OUT EP %x Complete",
+						pr_debug("USB: OUT EP %x Complete",
 								ep->epnum);
 						urbstat = 0;
 					}
@@ -915,7 +915,7 @@ static void process_transfer_result(struct ue11 *ue11, struct ue11h_ep *ep)
 					if (usb_pipecontrol(urb->pipe))
 						ep->nextpid = USB_PID_ACK;
 					else {
-						dev_info(ue11_to_hcd(ue11)->self.controller, "USB: IN EP %x Complete",
+						dev_dbg(ue11_to_hcd(ue11)->self.controller, "USB: IN EP %x Complete",
 								ep->epnum);
 						urbstat = 0;
 					}

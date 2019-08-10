@@ -8,7 +8,8 @@
 	#size-cells = <1>;
 
 	chosen {
-		bootargs = "console=ttyS0,115200n8 console=tty1 rootfstype=squashfs root=/dev/mtdblock1";
+		//bootargs = "console=ttyS0,115200n8 console=tty1 rootfstype=squashfs root=/dev/mtdblock1";
+		bootargs = "console=ttyS0,115200n8 console=tty1 root=/dev/nfs rootfstype=nfs nfsroot=192.168.1.30:/nfsshare,proto=tcp,nolock,nfsvers=3 nfsrootdebug rw ip=192.168.1.60:192.168.1.30:192.168.1.30:255.255.255.0:soc:eth0:off";
 	};
 
 	aliases {
@@ -112,7 +113,7 @@
 			interrupt-parent = <&cpuintc>;
 			interrupts = <6>;
 			reg = <0x1d000000 0x1000>;
-			xlnx,kind-of-intr = <0x15>;
+			xlnx,kind-of-intr = <0x7>;
 			xlnx,num-intr-inputs = <0x4>;
 		};
 
